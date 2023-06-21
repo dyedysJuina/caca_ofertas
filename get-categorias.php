@@ -1,5 +1,5 @@
 <?php
-// Conexão com o banco de dados
+// Conex���o com o banco de dados
 include_once("conexao.php");
 
 $idcatprincipal = $_POST['idcatprincipal'];
