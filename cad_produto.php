@@ -75,48 +75,34 @@
         
         <div class="col-md-4">
           <label for="cidadeSelect">Preco de Venda</label>
-          <input type="text" class="form-control" placeholder="R$" name="txt-preco-venda">
-        </div>
-        
-        <div class="col-md-4">
-          <label for="cidadeSelect">Qtd Comprada</label>
-          <input type="number" class="form-control" placeholder="Qtd-comprada" name="qtd-comprada">
-        </div>
-        
-        <div class="col-md-4">
-          <label for="cidadeSelect">Nome da Imagem</label>
-          <input type="file" class="form-control-file" name="imagem">
-        </div>
-        
-        <div class="col-md-12 mt-4">
-          <button type="submit" class="btn btn-primary">Cadastrar</button>
-        </div>
-      </div>
-    </form>
+          <input type="text" class="form-control" placeholder="R$" name="txt-preço-venda">
+</div>
+
+    <div class="col-md-4">
+      <label for="cidadeSelect">Qtd Comprada</label>
+      <input type="number" class="form-control" placeholder="Qtd-comprada" name="qtd-comprada">
+    </div>
+    
+    <div class="col-md-4">
+      <label for="cidadeSelect">Fotos do Produto</label>
+      <input type="file" class="form-control-file" name="imagens[]" multiple>
+    </div>
+    
+    <div class="col-md-12 mt-4">
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </div>
   </div>
-
-
-
-
-
-
-
-        
-     <?php
+</form>
+</div>
+<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include_once("conexao.php");
 
     $nome = $_POST['txt-nome-produto'];
     $subcategoria_id = $_POST['categoria'];
     $descricao = $_POST['txt-descricao'];
-    $nome_imagem = $_FILES['imagem']['name'];
-    $nome_imagem = uniqid() . '_' . $nome_imagem;
-    $url_caminho = "img_imagens/" . $nome_imagem;
-
-    // Obter os preços de compra e venda substituindo vírgula por ponto
     $preco_compra = str_replace(',', '.', $_POST['txt-preco-compra']);
     $preco_venda = str_replace(',', '.', $_POST['txt-preco-venda']);
-
     $empresa_id = $_POST['txt-id-empresa'];
     $data_cadastro = date('Y-m-d H:i:s');
     $qtd_comprada = $_POST['qtd-comprada'];
@@ -131,69 +117,89 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ultimo_id = mysqli_insert_id($conn);
 
     if ($linha === 1) {
-        // Faz o upload da imagem para a pasta "img_imagens"
-        $destino = "img_imagens/" . $nome_imagem;
-        $arquivo_temporario = $_FILES['imagem']['tmp_name'];
-        if (move_uploaded_file($arquivo_temporario, $destino)) {
-            $sqlimg = "INSERT INTO img_produtos (nome, url_caminho, idproduto) VALUES ('$nome_imagem','$url_caminho','$ultimo_id')";
-            $queryimg = mysqli_query($conn, $sqlimg);
-            $linhaimg = mysqli_affected_rows($conn);
+        $imagens = $_FILES['imagens'];
+        $numImagens = count($imagens['name']);
 
-            if ($linhaimg === 1) {
-                echo "Cadastrou com sucesso";
+        for ($i = 0; $i < $numImagens; $i++) {
+            $nome_imagem = uniqid() . '_' . $imagens['name'][$i];
+            $url_caminho = "img_imagens/" . $nome_imagem;
+
+            // Faz o upload da imagem para a pasta "img_imagens"
+            $destino = "img_imagens/" . $nome_imagem;
+            $arquivo_temporario = $imagens['tmp_name'][$i];
+            
+            if (move_uploaded_file($arquivo_temporario, $destino)) {
+                $sqlimg = "INSERT INTO img_produtos (nome, url_caminho, idproduto) VALUES ('$nome_imagem','$url_caminho','$ultimo_id')";
+                $queryimg = mysqli_query($conn, $sqlimg);
+                $linhaimg = mysqli_affected_rows($conn);
+
+                if ($linhaimg !== 1) {
+                    echo "Erro ao cadastrar a imagem";
+                }
             } else {
-                echo "Erro ao cadastrar a imagem";
+                echo "Erro ao fazer o upload da imagem";
             }
-        } else {
-            echo "Erro ao fazer o upload da imagem";
         }
+
+        echo "Cadastrou com sucesso";
     } else {
         echo "Erro ao cadastrar o produto";
     }
 }
 ?>
 
-        
-      </div>
-    </form>
-  </div>
+<script>
+  $(document).ready(function() {
+    $('#categoriaprincipal').on('change', function() {
+let idcatprincipal = this.value;
+$.ajax({
+url: "get-categorias.php",
+type: "POST",
+data: { idcatprincipal: idcatprincipal },
+cache: false,
+success: function(result) {
+$('#categoria').html(result);
+}
+});
+});
 
-  <script>
-    $(document).ready(function() {
-      $('#categoriaprincipal').on('change', function() {
-        let idcatprincipal = this.value;
-        $.ajax({
-          url: "get-categorias.php",
-          type: "POST",
-          data: { idcatprincipal: idcatprincipal },
-          cache: false,
-          success: function(result) {
-            $('#categoria').html(result);
-          }
-        });
-      });
-    });
-    
-    
-      $(document).ready(function() {
-      $('#categoria').on('change', function() {
-        let categoria = this.value;
-        $.ajax({
-          url: "get-subcategorias.php",
-          type: "POST",
-          data: { categoria: categoria },
-          cache: false,
-          success: function(result) {
-            $('#subcategoria').html(result);
-          }
-        });
-      });
-    });
-    
-    
-  </script>
+$('#categoria').on('change', function() {
+  let categoria = this.value;
+  $.ajax({
+    url: "get-subcategorias.php",
+    type: "POST",
+    data: { categoria: categoria },
+    cache: false,
+    success: function(result) {
+      $('#subcategoria').html(result);
+    }
+  });
+});
+
+});
+</script>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
