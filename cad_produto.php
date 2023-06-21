@@ -8,11 +8,9 @@
 </head>
 <body>
   <div class="container">
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
       <div class="row">
-          
-          
-          <div class="col-md-4">
+        <div class="col-md-4">
           <label for="empresas">Supermercados</label>
           <select id="txt-id-empresa" class="form-control" name="txt-id-empresa">
             <option value="">Selecione Supermercado</option>
@@ -28,11 +26,7 @@
             ?>
           </select>
         </div>
-          
-          
-          
-          
-          
+        
         <div class="col-md-4">
           <label for="estadoSelect">Categoria Principal</label>
           <select id="categoriaprincipal" class="form-control" name="categoriaprincipal">
@@ -49,13 +43,13 @@
             ?>
           </select>
         </div>
+        
         <div class="col-md-4">
           <label for="cidadeSelect">Categorias</label>
           <select id="categoria" class="form-control" name="categoria">
             <option value="">Selecione Categoria</option>
           </select>
         </div>
-        
         
         <div class="col-md-4">
           <label for="cidadeSelect">Subcategorias</label>
@@ -64,37 +58,60 @@
           </select>
         </div>
         
-        
         <div class="col-md-4">
           <label for="cidadeSelect">Nome do Produto</label>
-            <input type="text" placeholder="Nome do Produto" name="txt-nome-produto">
+          <input type="text" class="form-control" placeholder="Nome do Produto" name="txt-nome-produto">
         </div>
         
         <div class="col-md-4">
           <label for="cidadeSelect">Descrição do Item</label>
-            <input type="text" placeholder="Descreva sobre o item" name="txt-descricao">
+          <input type="text" class="form-control" placeholder="Descreva sobre o item" name="txt-descricao">
         </div>
         
         <div class="col-md-4">
           <label for="cidadeSelect">Preco de Compra</label>
-            <input type="text" placeholder="R$" name="txt-preco-compra">
+          <input type="text" class="form-control" placeholder="R$" name="txt-preco-compra">
         </div>
         
         <div class="col-md-4">
           <label for="cidadeSelect">Preco de Venda</label>
-            <input type="text" placeholder="R$" name="txt-preco-venda">
+          <input type="text" class="form-control" placeholder="R$" name="txt-preco-venda">
         </div>
         
         <div class="col-md-4">
-          <label for="cidadeSelect">qtd comprada</label>
-            <input type="number" placeholder="Qtd-comprada" name="qtd-comprada">
+          <label for="cidadeSelect">Qtd Comprada</label>
+          <input type="number" class="form-control" placeholder="Qtd-comprada" name="qtd-comprada">
         </div>
         
-       <?php
+        <div class="col-md-4">
+          <label for="cidadeSelect">Nome da Imagem</label>
+          <input type="file" class="form-control-file" name="imagem">
+        </div>
+        
+        <div class="col-md-12 mt-4">
+          <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+
+
+
+
+
+        
+     <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    include_once("conexao.php");
+
     $nome = $_POST['txt-nome-produto'];
     $subcategoria_id = $_POST['categoria'];
     $descricao = $_POST['txt-descricao'];
+    $nome_imagem = $_FILES['imagem']['name'];
+    $nome_imagem = uniqid() . '_' . $nome_imagem;
+    $url_caminho = "img_imagens/" . $nome_imagem;
 
     // Obter os preços de compra e venda substituindo vírgula por ponto
     $preco_compra = str_replace(',', '.', $_POST['txt-preco-compra']);
@@ -107,21 +124,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Calcular o total da compra
     $total_da_compra = $preco_compra * $qtd_comprada;
 
-    $sql = "INSERT INTO produtos (nome, subcategoria_id, descricao, preco_compra, preco_venda, idsupermercado, data_cadastro, qtd_comprada, total_da_compra) values 
+    $sql = "INSERT INTO produtos (nome, subcategoria_id, descricao, preco_compra, preco_venda, idsupermercado, data_cadastro, qtd_comprada, total_da_compra) VALUES 
     ('$nome','$subcategoria_id','$descricao','$preco_compra','$preco_venda','$empresa_id','$data_cadastro','$qtd_comprada','$total_da_compra')";
     $query = mysqli_query($conn, $sql);
     $linha = mysqli_affected_rows($conn);
-        
-        if($linha === 1){
-            echo"cadastrou com sucesso";
-        }else{
-            echo"nao cadastrou";
-        }
-        }
-        ?>
+    $ultimo_id = mysqli_insert_id($conn);
 
-        <button type="submit">Cadastrar Item</button>
-        
+    if ($linha === 1) {
+        // Faz o upload da imagem para a pasta "img_imagens"
+        $destino = "img_imagens/" . $nome_imagem;
+        $arquivo_temporario = $_FILES['imagem']['tmp_name'];
+        if (move_uploaded_file($arquivo_temporario, $destino)) {
+            $sqlimg = "INSERT INTO img_produtos (nome, url_caminho, idproduto) VALUES ('$nome_imagem','$url_caminho','$ultimo_id')";
+            $queryimg = mysqli_query($conn, $sqlimg);
+            $linhaimg = mysqli_affected_rows($conn);
+
+            if ($linhaimg === 1) {
+                echo "Cadastrou com sucesso";
+            } else {
+                echo "Erro ao cadastrar a imagem";
+            }
+        } else {
+            echo "Erro ao fazer o upload da imagem";
+        }
+    } else {
+        echo "Erro ao cadastrar o produto";
+    }
+}
+?>
+
         
       </div>
     </form>
