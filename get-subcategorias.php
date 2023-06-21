@@ -1,5 +1,5 @@
 <?php
-// Conexão com o banco de dados
+// Conex達o com o banco de dados
 include_once("conexao.php");
 
 $categoria = $_POST['categoria'];
