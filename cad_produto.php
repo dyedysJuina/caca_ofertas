@@ -95,6 +95,7 @@
 </form>
 </div>
 <?php
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include_once("conexao.php");
 
@@ -120,6 +121,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $imagens = $_FILES['imagens'];
         $numImagens = count($imagens['name']);
 
+        // Check the number of uploaded images
+        if ($numImagens < 1 || $numImagens > 8) {
+           echo '<div class="alert alert-danger" role="alert">Você deve enviar de 1 a 8 imagens!</div>';
+            exit;
+        }
+
         for ($i = 0; $i < $numImagens; $i++) {
             $nome_imagem = uniqid() . '_' . $imagens['name'][$i];
             $url_caminho = "img_imagens/" . $nome_imagem;
@@ -134,16 +141,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $linhaimg = mysqli_affected_rows($conn);
 
                 if ($linhaimg !== 1) {
-                    echo "Erro ao cadastrar a imagem";
+                    echo '<div class="alert alert-success" role="alert">Erro ao cadastrar imagem!</div>';
                 }
             } else {
-                echo "Erro ao fazer o upload da imagem";
+                echo '<div class="alert alert-success" role="alert">Erro ao fazer upload!</div>';
             }
         }
 
-        echo "Cadastrou com sucesso";
+        echo '<div class="alert alert-success" role="alert">Cadastrado com sucesso!</div>';
     } else {
-        echo "Erro ao cadastrar o produto";
+         echo '<div class="alert alert-danger" role="alert">Erro ao cadastrar o produto!</div>';
     }
 }
 ?>
