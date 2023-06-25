@@ -13,52 +13,38 @@
 
 
 
-<?php
+
+
+  <?php
 include_once("conexao.php");
 
 if (isset($_GET['idproduto'])) {
-    $idprodutos = $_GET['idproduto'];
-    $idempresas = $_GET['idempresa'];
-    $nomes = $_GET['nome'];
-    $precos_unitarios = $_GET['preco_unitario'];
-    $precos_oferta = $_GET['preco_da_oferta'];
-    $inicio_ofertas = $_GET['inicio_oferta'];
-    $fim_ofertas = $_GET['fim_oferta'];
+    $idproduto = $_GET['idproduto'];
+    $idempresa = $_GET['idempresa'];
+    $nomeproduto = $_GET['nome'];
+    $preco_unitario = $_GET['preco_unitario'];
+    $preco_oferta = $_GET['preco_oferta'];
+    $porcentagem_desconto = $_GET['porcentagem_desconto'];
+    $inicio_oferta = $_GET['inicio_oferta'];
+    $fim_oferta = $_GET['fim_oferta'];
+    $data_cadastro = date('Y-m-d H:i:s');
 
-    // Verificar se os arrays possuem a mesma quantidade de elementos
-    if (count($idprodutos) === count($idempresas) &&
-        count($idprodutos) === count($nomes) &&
-        count($idprodutos) === count($precos_unitarios) &&
-        count($idprodutos) === count($precos_oferta) &&
-        count($idprodutos) === count($inicio_ofertas) &&
-        count($idprodutos) === count($fim_ofertas)) {
 
-        // Percorrer os arrays com um loop
-        for ($i = 0; $i < count($idprodutos); $i++) {
-            $idproduto = $idprodutos[$i];
-            $idempresa = $idempresas[$i];
-            $nome = $nomes[$i];
-            $preco_unitario = $precos_unitarios[$i];
-            $preco_oferta = $precos_oferta[$i];
-            $inicio_oferta = $inicio_ofertas[$i];
-            $fim_oferta = $fim_ofertas[$i];
 
-            $sql = "INSERT INTO promocoes (idproduto, idempresa, nome, preco_unitario, preco_oferta, inicio_oferta, fim_oferta)
-            VALUES ('$idproduto', '$idempresa', '$nome', '$preco_unitario', '$preco_oferta', '$inicio_oferta', '$fim_oferta')";
-            $query = mysqli_query($conn, $sql);
-            $afetada = mysqli_affected_rows($conn);
-
-            if ($afetada > 0) {
-                echo "Cadastrou com sucesso!";
-            } else {
-                echo "Não foi possível cadastrar. Erro: " . mysqli_error($conn);
-            }
-        }
+   
+    $sql = "INSERT INTO promocoes (idproduto, idempresa, nome, preco_unitario, preco_oferta, porcentagem_desconto, inicio_oferta, fim_oferta, data_cadastro)
+     VALUES                      ('$idproduto','$idempresa','$nomeproduto','$preco_unitario','$preco_oferta','$porcentagem_desconto','$inicio_oferta','$fim_oferta','$data_cadastro')";
+    $query = mysqli_query($conn, $sql);
+    $afetada = mysqli_affected_rows($conn);
+  
+    if ($afetada > 0) {
+      echo "Cadastrou com sucesso!";
     } else {
-        echo "Os arrays não possuem a mesma quantidade de elementos.";
+      echo "Não foi possível cadastrar. Erro: " . mysqli_error($conn);
     }
-}
-?>
+  }
+  ?>
+  
 
 
 
