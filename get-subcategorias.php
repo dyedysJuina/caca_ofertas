@@ -1,13 +1,22 @@
 <?php
-// Conex達o com o banco de dados
+// Obter a conexão com o banco de dados
 include_once("conexao.php");
 
-$categoria = $_POST['categoria'];
-$sql = "SELECT * FROM subcategorias WHERE categoria_id = $categoria";
-$query = mysqli_query($conn, $sql);
-while ($resultado = mysqli_fetch_assoc($query)) {
-  ?>
-  <option value="<?php echo $resultado['id']; ?>"><?php echo $resultado['nome']; ?></option>
-  <?php
+// Verificar se o ID da categoria principal foi enviado via POST
+if (isset($_POST['idcategoria'])) {
+    $idcategoria = $_POST['idcategoria'];
+
+    // Consultar as categorias com base no ID da categoria principal
+    $sql = "SELECT * FROM subcategorias WHERE idcat= '$idcategoria'";
+    $query = mysqli_query($conn, $sql);
+
+    // Construir as opções do select das categorias
+    $options = "<option value=''>SubCategoria</option>";
+    while ($resultado = mysqli_fetch_assoc($query)) {
+        $options .= "<option value='".$resultado['idsubcat']."'>".$resultado['nome']."</option>";
+    }
+
+    // Retornar as opções como resposta para o JavaScript
+    echo $options;
 }
 ?>
