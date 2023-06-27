@@ -6,7 +6,7 @@ include_once("conexao.php");
 if (isset($_POST['idcatprincipal'])) {
     $idcatprincipal = $_POST['idcatprincipal'];
 
-    // Consultar as categorias com base no ID da categoria principal
+    // Consultar as categorias com base no ID da categoria prind
     $sql = "SELECT * FROM categorias WHERE idcatprincipal = '$idcatprincipal'";
     $query = mysqli_query($conn, $sql);
 
