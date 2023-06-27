@@ -19,6 +19,7 @@
 include_once("conexao.php");
 
 if (isset($_GET['idproduto'])) {
+    
     $idproduto = $_GET['idproduto'];
     $idempresa = $_GET['idempresa'];
     $nomeproduto = $_GET['nome'];
