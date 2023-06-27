@@ -2,7 +2,7 @@
 // Obter a conexão com o banco de dados
 include_once("conexao.php");
 
-// Verificar se o ID da categoria principal foi enviado via POST
+// Verificar se o ID da categoria principal foi enviado via POSTd
 if (isset($_POST['idcategoria'])) {
     $idcategoria = $_POST['idcategoria'];
 
