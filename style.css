@@ -1,0 +1,168 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+    border: none;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+   
+
+}
+
+body{
+    background-color:rgb(34, 33, 33);
+}
+
+.container{
+    background-color:rgb(34, 33, 33);
+}
+
+.box-menu{
+    position:relative;
+    display:flex;
+    justify-content:space-between;
+    width:100%;
+    height:100px;
+    background-color:rgb(50, 50, 51);
+    padding:20px 25px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    
+}
+
+.box-menu .box-esquerda{
+    top:0;
+    display:flex;
+    align-items:left;
+    position:absolute;
+    min-height: 100%;
+    flex-direction: column-reverse;
+    justify-content: center;
+}
+
+.box-menu .box-esquerda p{
+    color:rgb(230, 255, 7);
+    font-size: 2.2rem;
+    padding-right: 15px;
+    font-weight: 300;
+
+
+}
+
+.box-menu .box-esquerda p:nth-child(2){
+    font-size:1.0rem;
+    font-weight: 300;
+    color:rgb(230, 255, 7);
+}
+
+
+
+.box-menu .box-direita{
+    top:0;
+    display:flex;
+    align-items:center;
+    position:absolute;
+    min-height: 100%;
+    right:0;
+    padding:0px 25px;
+}
+
+.box-menu .box-direita a{
+    margin-left:35px;
+    color:white;
+}
+
+
+/* BOX INPUT PESQUISA */
+.box-pesquisa{
+    margin-top:8px;;
+    width:100%;
+    padding:15px 25px;
+    display:flex;
+}
+
+.box-pesquisa input{
+    padding-left:15px;
+    height: 34px;
+    border-radius:3px;
+    outline:none;
+
+}
+
+.box-pesquisa button{
+    margin-left:-10px;
+    height:36px;
+    background-color:rgba(250, 84, 7, 0.938);
+    color:rgb(243, 243, 243);
+    padding:0px 10px;
+    border-radius:0px 8px 8px 0px;
+    font-size:13px;
+ 
+}
+
+
+table{
+    font-size:0.8rem;
+    margin-top:10px;
+    padding-top:400px;
+}
+
+
+
+td button{
+    background-color:rgb(212, 212, 214);
+    color:rgb(255, 255, 255);
+    padding:3px 10px;
+    border-radius:3px;
+    font-size:0.9rem;
+    background: rgba(255,30,37,1);
+background: -moz-linear-gradient(left, rgba(255,30,37,1) 0%, rgba(255,94,52,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,30,37,1)), color-stop(100%, rgba(255,94,52,1)));
+background: -webkit-linear-gradient(left, rgba(255,30,37,1) 0%, rgba(255,94,52,1) 100%);
+background: -o-linear-gradient(left, rgba(255,30,37,1) 0%, rgba(255,94,52,1) 100%);
+background: -ms-linear-gradient(left, rgba(255,30,37,1) 0%, rgba(255,94,52,1) 100%);
+background: linear-gradient(to right, rgba(255,30,37,1) 0%, rgba(255,94,52,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff1e25', endColorstr='#ff5e34', GradientType=1 );
+    
+}
+
+tr{
+    background: rgb(223, 223, 226);
+}
+
+th{
+    color:rgb(255, 255, 255);
+    background-color:rgb(48, 48, 48);
+  
+}
+
+td{
+    max-width:100%;
+    color:red;
+
+}
+
+td #preco{
+    height: auto;
+    width:100px;
+ }
+
+ td #empresa{
+    height: auto;
+    width:50px;
+ }
+
+ td #imagem{
+    height: auto;
+    width:30px;
+ }
+
+ td input{
+    background-color:rgb(253, 251, 251);
+    padding:2px 8px;
+    border-radius:3px;
+ }
+
+ td textarea{
+    padding:0px 10px;
+ }
