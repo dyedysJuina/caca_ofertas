@@ -18,14 +18,14 @@
   <?php
 include_once("conexao.php");
 
-if (isset($_GET['idproduto'])) {
-    
+  if(isset($_GET['idempresa']) && isset($_GET['idproduto'])){
+    $idimg = $_GET['idimg'];
+    $descricao = $_GET['descricao'];
     $idproduto = $_GET['idproduto'];
     $idempresa = $_GET['idempresa'];
     $nomeproduto = $_GET['nome'];
     $preco_unitario = $_GET['preco_unitario'];
     $preco_oferta = $_GET['preco_oferta'];
-    $porcentagem_desconto = $_GET['porcentagem_desconto'];
     $inicio_oferta = $_GET['inicio_oferta'];
     $fim_oferta = $_GET['fim_oferta'];
     $data_cadastro = date('Y-m-d H:i:s');
@@ -33,8 +33,8 @@ if (isset($_GET['idproduto'])) {
 
 
    
-    $sql = "INSERT INTO promocoes (idproduto, idempresa, nome, preco_unitario, preco_oferta, porcentagem_desconto, inicio_oferta, fim_oferta, data_cadastro)
-     VALUES                      ('$idproduto','$idempresa','$nomeproduto','$preco_unitario','$preco_oferta','$porcentagem_desconto','$inicio_oferta','$fim_oferta','$data_cadastro')";
+    $sql = "INSERT INTO promocoes (idimg, idproduto, idempresa, nome, preco_unitario, preco_oferta, inicio_oferta, fim_oferta, data_cadastro,descricao)
+     VALUES                      ('$idimg','$idproduto','$idempresa','$nomeproduto','$preco_unitario','$preco_oferta','$inicio_oferta','$fim_oferta','$data_cadastro','$descricao')";
     $query = mysqli_query($conn, $sql);
     $afetada = mysqli_affected_rows($conn);
   
